@@ -1,3 +1,5 @@
+import os
+
 import tornado.ioloop
 import tornado.web
 
@@ -52,17 +54,18 @@ if __name__ == "__main__":
     Base.metadata.bind = engine
     DBSession = sessionmaker(bind=engine)
 
-    session = DBSession()
+    if not os.path.isfile('posts.db'):
+	    session = DBSession()
 
-    new_user = User(name="john", passwd="foo")
-    session.add(new_user)
-    session.commit()
+	    new_user = User(name="john", passwd="foo")
+	    session.add(new_user)
+	    session.commit()
 
-    new_post1 = Post(text="This is a test", user_id=new_user.id)
-    new_post2 = Post(text="This is a text", user_id=new_user.id)
-    session.add(new_post1)
-    session.add(new_post2)
-    session.commit()
+	    new_post1 = Post(text="This is a test", user_id=new_user.id)
+	    new_post2 = Post(text="This is a text", user_id=new_user.id)
+	    session.add(new_post1)
+	    session.add(new_post2)
+	    session.commit()
 
     app = make_app()
     app.listen(8888)
