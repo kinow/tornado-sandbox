@@ -1,5 +1,6 @@
 import graphene
 import datetime
+import asyncio
 
 
 class Fruit(graphene.ObjectType):
@@ -14,4 +15,16 @@ class Query(graphene.ObjectType):
     def resolve_fruit(self, info):
         return Fruit(name="Banana", date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S%z"))
 
-schema = graphene.Schema(query=Query)
+
+class Subscription(graphene.ObjectType):
+
+    fruit = graphene.Field(Fruit)
+
+    async def resolve_fruit(self, info):
+        while True:
+            yield Fruit(name="Banana", date=datetime.datetime.now().strftime(
+                "%Y-%m-%d %H:%M:%S%z"))
+            await asyncio.sleep(1.)
+
+
+schema = graphene.Schema(query=Query, subscription=Subscription)
