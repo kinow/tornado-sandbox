@@ -6,10 +6,6 @@ from schema import schema
 from graphene_tornado.tornado_graphql_handler import TornadoGraphQLHandler
 
 
-async def resolve_foo(self, info):
-    return "Hello"
-
-
 class GraphQLApplication(tornado.web.Application):
 
     def __init__(self):
