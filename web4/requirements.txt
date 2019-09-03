@@ -1,0 +1,4 @@
+tornado==6.*
+graphene>=2.0.1
+graphene-tornado
+graphql-ws

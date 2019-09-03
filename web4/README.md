@@ -1,0 +1,1 @@
+An example with GraphQL and WebSockets for subscriptions
