@@ -1,18 +1,14 @@
 <template>
-  <div class="home">
-    <h2>The fruit of the day is {{ fruit }}</h2>
-    <h4>And the time is {{ time }}</h4>
-  </div>
+  <fruit-clock />
 </template>
 
 <script>
+import FruitClock from '../components/FruitClock'
+
 export default {
   name: 'home',
-  data () {
-    return {
-      fruit: '',
-      time: ''
-    }
+  components: {
+    FruitClock
   }
 }
 </script>
