@@ -5,12 +5,21 @@ import tornado.websocket
 from tornado.ioloop import IOLoop
 
 from tornado_ws_wip import TornadoSubscriptionServer
+from graphiql_template_vue import render_graphiql
+from graphql_ws.constants import GRAPHQL_WS
 
 # from graphene_tornado.schema import schema
 from schema import schema
 from graphene_tornado.tornado_graphql_handler import TornadoGraphQLHandler
+from graphene_tornado.tornado_executor import TornadoExecutor
 
 subscription_server = TornadoSubscriptionServer(schema)
+
+
+# to render a Vue app with GraphiQL
+class GraphiQLHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.finish(render_graphiql())
 
 
 class SubscriptionHandler(tornado.websocket.WebSocketHandler):
@@ -20,7 +29,7 @@ class SubscriptionHandler(tornado.websocket.WebSocketHandler):
         self.queue = Queue()
 
     def select_subprotocol(self, subprotocols):
-        return 'graphql-ws'
+        return GRAPHQL_WS
 
     def open(self, *args, **kwargs):
         IOLoop.current().spawn_callback(subscription_server.handle, self)
@@ -35,10 +44,21 @@ class SubscriptionHandler(tornado.websocket.WebSocketHandler):
 class GraphQLApplication(tornado.web.Application):
 
     def __init__(self):
+        executor = TornadoExecutor()
+        # graphql Executor now needs a `allow_subscriptions=True`, or you will get
+        # {
+        #   "errors": [
+        #     {
+        #       "message": "Subscriptions are not allowed. You will need to either use the subscribe function or pass allow_subscriptions=True"
+        #     }
+        #   ],
+        #   "data": null
+        # }
+        executor.allow_subscriptions = True
         handlers = [
-            (r'/graphql', TornadoGraphQLHandler, dict(graphiql=True, schema=schema)),
-            (r'/graphql/batch', TornadoGraphQLHandler, dict(graphiql=True, schema=schema, batch=True)),
-            (r'/graphql/graphiql', TornadoGraphQLHandler, dict(graphiql=True, schema=schema)),
+            (r'/graphql', TornadoGraphQLHandler, dict(graphiql=True, schema=schema, executor=executor, allow_subscriptions=True)),
+            (r'/graphql/batch', TornadoGraphQLHandler, dict(graphiql=True, schema=schema, batch=True, executor=executor, allow_subscriptions=True)),
+            (r'/graphql/graphiql', GraphiQLHandler, dict(graphiql=True, schema=schema, executor=executor, allow_subscriptions=True)),
             (r'/subscriptions', SubscriptionHandler)
         ]
         tornado.web.Application.__init__(self, handlers)

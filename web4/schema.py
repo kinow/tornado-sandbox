@@ -1,6 +1,6 @@
 import graphene
 import datetime
-import asyncio
+from rx import Observable
 
 
 class Fruit(graphene.ObjectType):
@@ -20,11 +20,15 @@ class Subscription(graphene.ObjectType):
 
     fruit = graphene.Field(Fruit)
 
-    async def resolve_fruit(self, info):
-        while True:
-            yield Fruit(name="Banana", date=datetime.datetime.now().strftime(
-                "%Y-%m-%d %H:%M:%S%z"))
-            await asyncio.sleep(1.)
+    def resolve_fruit(self, info):
+        # while True:
+        #     yield Fruit(name="Banana", date=datetime.datetime.now().strftime(
+        #         "%Y-%m-%d %H:%M:%S%z"))
+        #     await asyncio.sleep(1.)
+        fruit = Fruit(name="Banana", date=datetime.datetime.now().strftime(
+                 "%Y-%m-%d %H:%M:%S%z"))
+        return Observable.from_([fruit]).map(lambda x: x)
+        #return fruit
 
 
 schema = graphene.Schema(query=Query, subscription=Subscription)
