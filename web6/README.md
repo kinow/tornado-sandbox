@@ -1,0 +1,1 @@
+An example to reproduce https://github.com/graphql-python/graphene-tornado/issues/27
