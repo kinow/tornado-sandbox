@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "npm-check-updates": "^4.1.1",
     "subscriptions-transport-ws": "^0.9.16",
     "vue": "^2.6.11",
     "vue-apollo": "^3.0.3",
