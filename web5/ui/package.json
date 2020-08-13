@@ -9,24 +9,24 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "npm-check-updates": "^7.0.2",
+    "npm-check-updates": "^7.1.0",
     "subscriptions-transport-ws": "^0.9.17",
     "vue": "^2.6.11",
     "vue-apollo": "^3.0.4",
-    "vue-router": "^3.3.4"
+    "vue-router": "^3.4.3"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.4.6",
-    "@vue/cli-plugin-eslint": "^4.4.6",
-    "@vue/cli-plugin-router": "^4.4.6",
-    "@vue/cli-service": "^4.4.6",
+    "@vue/cli-plugin-babel": "^4.5.3",
+    "@vue/cli-plugin-eslint": "^4.5.3",
+    "@vue/cli-plugin-router": "^4.5.3",
+    "@vue/cli-service": "^4.5.3",
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.5.0",
+    "eslint": "^7.6.0",
     "eslint-plugin-vue": "^6.2.2",
     "graphql-tag": "^2.11.0",
     "sass": "^1.26.10",
-    "sass-loader": "^9.0.2",
+    "sass-loader": "^9.0.3",
     "vue-cli-plugin-apollo": "^0.22.2",
     "vue-template-compiler": "^2.6.11"
   }
